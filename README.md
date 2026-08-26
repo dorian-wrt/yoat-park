@@ -9,7 +9,15 @@ place dans les marinas, à commencer par **Port Hercule (Monaco)**. Construit su
 **https://yoat-parks.webflow.io** — page d'accueil du projet Webflow « Yoat Parks »
 (site `6a8f28f6be330c0ca07aef3d`, page Home `6a8f28fcbe330c0ca07aef76`).
 
-### V2 — Interface construite NATIVEMENT dans Webflow (actuelle)
+### V3 — Héros cinématique (actuelle)
+
+Nouvelle direction artistique en tête de page : **dark theme bleu élégant + doré + blanc net**.
+- **Vidéo du port en fond** (asset `port-hercule-bg.mp4`, plein cadre via `yp-vhero-video`).
+- **Titre sérif** (Instrument Serif) centré qui **s'écrit tout seul** (effet machine à écrire, curseur doré clignotant), puis révélation en fondu de l'accroche et du repère de scroll.
+- **Body en Inter** (sans-serif « suisse »). Titres sérif / corps sans-serif.
+- Script d'animation + réservation regroupé dans [`webflow/hero-and-reservation.js`](webflow/hero-and-reservation.js) (bloc Footer), fonts + keyframes dans le `<head>`.
+
+### V2 — Sélection de place native dans Webflow
 
 Vrais éléments Webflow (sections, div, image, boutons, champs, classes `yp-*`), éditables
 dans le Designer. Seul code = un petit script de liaison dans le bloc Footer.

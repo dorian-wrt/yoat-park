@@ -1,10 +1,48 @@
-// Yoat Park — reservation glue script (lives in the Home page "Footer" custom code).
-// Wires the native Webflow berth buttons to the reservation card:
-// click a pin -> fill the recap, smooth-scroll down, compute total = price x nights.
-// Elements are selected by data-yp / data-berth attributes set in the Webflow Designer.
+// Yoat Park — Home page "Footer" custom code.
+// 1) Cinematic hero: types the serif headline character by character, then
+//    reveals the subtitle and scroll cue. Caret blink + reveals are CSS
+//    (defined in the page <head>).
+// 2) Reservation glue: clicking a berth pin fills the recap card, smooth-scrolls
+//    to it, and keeps the total = price x nights in sync.
+// Hooks are data-yp / data-berth attributes set on the native Webflow elements.
 (function () {
-  function euro(n) { return (n || 0).toLocaleString('fr-FR') + ' €'; }
+  /* ---------- Cinematic hero: typewriter + reveal ---------- */
+  var title = document.querySelector('[data-yp="vtitle"]');
+  var eyebrow = document.querySelector('[data-yp="eyebrow"]');
+  var vsub = document.querySelector('[data-yp="vsub"]');
+  var cue = document.querySelector('[data-yp="scrollcue"]');
+  if (title) {
+    var full = title.getAttribute('data-type') || title.textContent || '';
+    title.textContent = '';
+    var txt = document.createTextNode('');
+    var caret = document.createElement('span');
+    caret.className = 'yp-caret';
+    caret.textContent = '|';
+    title.appendChild(txt);
+    title.appendChild(caret);
+    var i = 0;
+    function type() {
+      if (i < full.length) {
+        txt.textContent += full.charAt(i);
+        var pause = full.charAt(i) === ' ' ? 70 : 44;
+        i++;
+        setTimeout(type, pause);
+      } else {
+        if (vsub) vsub.classList.add('show');
+        if (cue) cue.classList.add('show');
+        setTimeout(function () { caret.style.display = 'none'; }, 1600);
+      }
+    }
+    if (eyebrow) setTimeout(function () { eyebrow.classList.add('show'); }, 250);
+    setTimeout(type, 750);
+  }
+  if (cue) cue.addEventListener('click', function () {
+    var next = document.querySelector('.yp-hero');
+    if (next) next.scrollIntoView({ behavior: 'smooth' });
+  });
 
+  /* ---------- Reservation glue ---------- */
+  function euro(n) { return (n || 0).toLocaleString('fr-FR') + ' €'; }
   var pins = document.querySelectorAll('[data-berth]');
   var f = {};
   ['name', 'pont', 'len', 'beam', 'draft', 'price', 'total'].forEach(function (k) {
