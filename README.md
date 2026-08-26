@@ -9,13 +9,15 @@ place dans les marinas, à commencer par **Port Hercule (Monaco)**. Construit su
 **https://yoat-parks.webflow.io** — page d'accueil du projet Webflow « Yoat Parks »
 (site `6a8f28f6be330c0ca07aef3d`, page Home `6a8f28fcbe330c0ca07aef76`).
 
-### V3 — Héros cinématique (actuelle)
+### V3 — Séquence cinématique unifiée (actuelle)
 
-Nouvelle direction artistique en tête de page : **dark theme bleu élégant + doré + blanc net**.
-- **Vidéo du port en fond** (asset `port-hercule-bg.mp4`, plein cadre via `yp-vhero-video`).
-- **Titre sérif** (Instrument Serif) centré qui **s'écrit tout seul** (effet machine à écrire, curseur doré clignotant), puis révélation en fondu de l'accroche et du repère de scroll.
-- **Body en Inter** (sans-serif « suisse »). Titres sérif / corps sans-serif.
-- Script d'animation + réservation regroupé dans [`webflow/hero-and-reservation.js`](webflow/hero-and-reservation.js) (bloc Footer), fonts + keyframes dans le `<head>`.
+Une seule séquence immersive en tête de page (**dark bleu + doré + blanc**, titres Instrument Serif, body Inter) :
+1. **Vidéo du port** (`port-hercule-bg.mp4`) qui joue **une fois** puis **se fige** sur la dernière image (`loop` retiré).
+2. Le **titre sérif** (Instrument Serif) **s'écrit tout seul** puis **se retire** en fondu (`.yp-hideup`).
+3. Les **7 pastilles rondes** (`yp-berthwrap` + `yp-pin-1…7`) **apparaissent sur les bateaux** de l'image figée ; dorées = disponibles, grises = réservées.
+4. Clic sur une pastille → scroll fluide vers la **section réservation** (récap + nuits + total en direct).
+
+Un lien « Choisir ma place maintenant » permet de sauter l'intro. Positions des pastilles calées sur la dernière frame de la vidéo. Script unique : [`webflow/hero-and-reservation.js`](webflow/hero-and-reservation.js) (bloc Footer).
 
 ### V2 — Sélection de place native dans Webflow
 

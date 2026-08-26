@@ -1,16 +1,28 @@
-// Yoat Park — Home page "Footer" custom code.
-// 1) Cinematic hero: types the serif headline character by character, then
-//    reveals the subtitle and scroll cue. Caret blink + reveals are CSS
-//    (defined in the page <head>).
-// 2) Reservation glue: clicking a berth pin fills the recap card, smooth-scrolls
-//    to it, and keeps the total = price x nights in sync.
-// Hooks are data-yp / data-berth attributes set on the native Webflow elements.
+// Yoat Park — Home page "Footer" custom code (unified cinematic sequence).
+//
+// Sequence:
+//  1) The hero background video plays ONCE (loop attribute removed in Webflow).
+//  2) The serif headline types itself in, then eyebrow / subtitle / cue reveal.
+//  3) When the video ends (or the user clicks the cue to skip), the video freezes
+//     on its last frame, the headline block retracts (.yp-hideup), and the berth
+//     pins fade in over the frozen port (.yp-berthwrap -> .show).
+//  4) Clicking a berth pin fills the reservation recap, smooth-scrolls to it, and
+//     keeps the total = price x nights in sync.
+//
+// Hooks are data-yp / data-berth attributes + yp-* classes on native Webflow
+// elements. Caret blink, reveal and retract transitions live in the page <head>.
 (function () {
-  /* ---------- Cinematic hero: typewriter + reveal ---------- */
+  var video = document.querySelector('.yp-vhero-video');
+  var content = document.querySelector('.yp-vhero-content');
+  var overlay = document.querySelector('.yp-vhero-overlay');
+  var wrap = document.querySelector('.yp-berthwrap');
   var title = document.querySelector('[data-yp="vtitle"]');
   var eyebrow = document.querySelector('[data-yp="eyebrow"]');
   var vsub = document.querySelector('[data-yp="vsub"]');
   var cue = document.querySelector('[data-yp="scrollcue"]');
+  if (cue) cue.textContent = 'Choisir ma place maintenant ↓';
+
+  /* ---- Typewriter headline ---- */
   if (title) {
     var full = title.getAttribute('data-type') || title.textContent || '';
     title.textContent = '';
@@ -24,24 +36,48 @@
     function type() {
       if (i < full.length) {
         txt.textContent += full.charAt(i);
-        var pause = full.charAt(i) === ' ' ? 70 : 44;
+        var p = full.charAt(i) === ' ' ? 70 : 44;
         i++;
-        setTimeout(type, pause);
+        setTimeout(type, p);
       } else {
         if (vsub) vsub.classList.add('show');
         if (cue) cue.classList.add('show');
-        setTimeout(function () { caret.style.display = 'none'; }, 1600);
+        setTimeout(function () { caret.style.display = 'none'; }, 1400);
       }
     }
     if (eyebrow) setTimeout(function () { eyebrow.classList.add('show'); }, 250);
-    setTimeout(type, 750);
+    setTimeout(type, 700);
   }
-  if (cue) cue.addEventListener('click', function () {
-    var next = document.querySelector('.yp-hero');
-    if (next) next.scrollIntoView({ behavior: 'smooth' });
-  });
 
-  /* ---------- Reservation glue ---------- */
+  /* ---- Video ends -> freeze, retract title, reveal berths ---- */
+  var revealed = false;
+  function revealBerths() {
+    if (revealed) return;
+    revealed = true;
+    if (video) {
+      try {
+        video.pause();
+        if (isFinite(video.duration) && video.duration) video.currentTime = Math.max(0, video.duration - 0.05);
+      } catch (e) {}
+    }
+    if (content) content.classList.add('yp-hideup');
+    if (cue) cue.classList.add('yp-hideup');
+    if (overlay) overlay.style.opacity = '0.3';
+    if (wrap) wrap.classList.add('show');
+  }
+  if (video) {
+    video.addEventListener('ended', revealBerths);
+    video.addEventListener('loadedmetadata', function () {
+      if (isFinite(video.duration) && video.duration > 0) {
+        setTimeout(function () { revealBerths(); }, (video.duration * 1000) + 1500);
+      }
+    });
+    var pr = video.play && video.play();
+    if (pr && pr.catch) pr.catch(function () {});
+  }
+  if (cue) cue.addEventListener('click', function (e) { e.preventDefault(); revealBerths(); });
+
+  /* ---- Reservation glue ---- */
   function euro(n) { return (n || 0).toLocaleString('fr-FR') + ' €'; }
   var pins = document.querySelectorAll('[data-berth]');
   var f = {};
