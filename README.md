@@ -6,11 +6,34 @@ place dans les marinas, à commencer par **Port Hercule (Monaco)**. Construit su
 
 ## 🌐 En ligne
 
-**https://yoat-parks.webflow.io** — déployé sur la page d'accueil du projet Webflow « Yoat Parks »
+**https://yoat-parks.webflow.io** — page d'accueil du projet Webflow « Yoat Parks »
 (site `6a8f28f6be330c0ca07aef3d`, page Home `6a8f28fcbe330c0ca07aef76`).
-CSS + Poppins dans le `<head>`, markup + JS dans le bloc **Footer** de la page.
 
-## État actuel — V1 « Vitrine immersive »
+### V2 — Interface construite NATIVEMENT dans Webflow (actuelle)
+
+Vrais éléments Webflow (sections, div, image, boutons, champs, classes `yp-*`), éditables
+dans le Designer. Seul code = un petit script de liaison dans le bloc Footer.
+
+- **Héro** : image de marina (asset `hero-marina`) en fond + titre + **7 boutons-places**
+  (`yp-pin-1`…`yp-pin-7`) positionnés en absolu ; dorés = disponibles, gris = réservées (03, 06).
+  Chaque bouton porte les données de la place en attributs `data-berth / data-pont / data-len /
+  data-beam / data-draft / data-price / data-status`.
+- **Clic sur une place** → scroll fluide vers la section réservation + remplissage du récap.
+- **Section réservation** (`yp-resv`) : récap (place, ponton, dimensions, prix/nuit) +
+  champ **nombre de nuits** + **total en direct** (prix × nuits) + bouton « Demander cette place ».
+
+**Réglages faciles dans le Designer :** déplacer un pin = changer `left`/`top` de sa classe
+`yp-pin-N` ; changer un prix = attribut `data-price` du bouton ; changer l'image = remplacer
+l'asset du héros. Le script de calcul lit ces attributs automatiquement.
+
+Le script de liaison est sauvegardé dans [`webflow/reservation-glue.js`](webflow/reservation-glue.js).
+
+### V1 — Prototype overlay (référence, `webflow/embed-port-hercule.html`)
+
+Première version : plan interactif complet du port en un bloc de code injecté. Conservée
+comme référence ; remplacée par la V2 native ci-dessus.
+
+## Prototype V1 — détails « Vitrine immersive »
 
 - ✅ **Intro cinématique** (mer animée, identité Yoat Park, CTA « Choisir ma place »)
 - ✅ **Plan interactif de Port Hercule** : pontons A–D, Quai Antoine 1ᵉʳ, Quai Albert 1ᵉʳ,
