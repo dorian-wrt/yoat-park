@@ -4,6 +4,12 @@ Site immersif permettant aux propriétaires de yachts de trouver et réserver un
 place dans les marinas, à commencer par **Port Hercule (Monaco)**. Construit sur
 **Webflow** (piloté via le MCP Webflow).
 
+## 🌐 En ligne
+
+**https://yoat-parks.webflow.io** — déployé sur la page d'accueil du projet Webflow « Yoat Parks »
+(site `6a8f28f6be330c0ca07aef3d`, page Home `6a8f28fcbe330c0ca07aef76`).
+CSS + Poppins dans le `<head>`, markup + JS dans le bloc **Footer** de la page.
+
 ## État actuel — V1 « Vitrine immersive »
 
 - ✅ **Intro cinématique** (mer animée, identité Yoat Park, CTA « Choisir ma place »)
