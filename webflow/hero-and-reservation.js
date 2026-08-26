@@ -20,6 +20,10 @@
   var eyebrow = document.querySelector('[data-yp="eyebrow"]');
   var vsub = document.querySelector('[data-yp="vsub"]');
   var cue = document.querySelector('[data-yp="scrollcue"]');
+  // Hero eyebrow + subtitle text (set here because the headless Webflow builder
+  // cannot write TextBlock/Paragraph text; edit these strings or type in Designer).
+  if (eyebrow) eyebrow.textContent = 'Yoat Park — Port Hercule, Monaco';
+  if (vsub) vsub.textContent = "Réservez l'amarrage de votre yacht en quelques secondes — une expérience à la hauteur de Monaco.";
   if (cue) cue.textContent = 'Choisir ma place maintenant ↓';
 
   /* ---- Typewriter headline ---- */
@@ -84,6 +88,10 @@
   ['name', 'pont', 'len', 'beam', 'draft', 'price', 'total'].forEach(function (k) {
     f[k] = document.querySelector('[data-yp="' + k + '"]');
   });
+  // Initialise the dynamic recap fields so no Webflow placeholder shows before a pin is picked.
+  if (f.name) f.name.textContent = 'Sélectionnez une place';
+  ['pont', 'len', 'beam', 'draft', 'price'].forEach(function (k) { if (f[k]) f[k].textContent = ''; });
+  if (f.total) f.total.textContent = '—';
   var nights = document.querySelector('[data-yp="nights"]');
   var resv = document.querySelector('[data-yp="reservation"]');
   var cta = document.querySelector('[data-yp="cta"]');
